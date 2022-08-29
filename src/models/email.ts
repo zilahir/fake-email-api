@@ -45,4 +45,8 @@ export async function findById(emailId: string) {
   return Email.findById(emailId).lean();
 }
 
+export async function allEmail() {
+  return Email.find().lean();
+}
+
 export default Email;

@@ -1,12 +1,11 @@
 import type { Request, Response } from 'express';
 
 import type { NewEmail } from '../models/email';
-import { findById, insertNewEmail } from '../models/email';
+import { allEmail, findById, insertNewEmail } from '../models/email';
 
-export async function getEmail(_: any, response: Response) {
-  return response.status(200).send({
-    hello: true,
-  });
+export async function getAllEmail(_: any, response: Response) {
+  const emails = await allEmail();
+  return response.status(200).send({ emails });
 }
 
 export async function createNewEmail(
@@ -21,9 +20,10 @@ export async function createNewEmail(
     sender,
   };
 
-  insertNewEmail(emailData).then(() => {
+  insertNewEmail(emailData).then((email) => {
     response.status(200).send({
       saved: true,
+      email,
     });
   });
 }
