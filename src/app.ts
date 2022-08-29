@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express, { json } from 'express';
 import helmet from 'helmet';
 
@@ -7,6 +8,8 @@ import emailRouter from './routes/email';
 const app = express();
 app.use(json());
 app.use(helmet());
+
+dotenv.config();
 
 // Connect to MongoDB
 connectDB();
