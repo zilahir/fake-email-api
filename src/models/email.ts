@@ -41,4 +41,8 @@ export async function insertNewEmail(email: NewEmail) {
   return newEmail.save();
 }
 
+export async function findById(emailId: string) {
+  return Email.findById(emailId).lean();
+}
+
 export default Email;

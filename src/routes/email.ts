@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
-import { createNewEmail, getEmail } from '@/controllers/email';
+import { createNewEmail, getEmail, getOneById } from '@/controllers/email';
 
 const router: Router = Router();
 
-router.get('/', [getEmail]);
+router.get('/all', [getEmail]);
+router.get('/:id', [getOneById]);
 router.post('/', [createNewEmail]);
 
 export default router;

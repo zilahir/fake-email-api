@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import type { NewEmail } from '../models/email';
-import { insertNewEmail } from '../models/email';
+import { findById, insertNewEmail } from '../models/email';
 
 export async function getEmail(_: any, response: Response) {
   return response.status(200).send({
@@ -25,5 +25,21 @@ export async function createNewEmail(
     response.status(200).send({
       saved: true,
     });
+  });
+}
+
+export interface FindEmailById {
+  id: string;
+}
+
+export async function getOneById(
+  request: Request<FindEmailById>,
+  response: Response
+) {
+  const { id } = request.params;
+  const thisEmail = await findById(id);
+
+  response.status(200).send({
+    ...thisEmail,
   });
 }
