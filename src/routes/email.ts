@@ -4,7 +4,7 @@ import { createNewEmail, getAllEmail, getOneById } from '@/controllers/email';
 
 const router: Router = Router();
 
-router.get('/all', [getAllEmail]);
+router.get('/all/:type', [getAllEmail]);
 router.get('/:id', [getOneById]);
 router.post('/', [createNewEmail]);
 

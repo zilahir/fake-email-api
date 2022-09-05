@@ -1,11 +1,17 @@
 import type { Document } from 'mongoose';
 import { model, Schema } from 'mongoose';
 
+export enum EmailType {
+  INCOMING = 'INCOMING',
+  OUTGOING = 'OUTGOING',
+}
+
 export interface SingleEmail {
   sender: string;
   sentAt: number;
   content: string;
   isRead: boolean;
+  emailType: EmailType;
 }
 
 export interface IEmail extends SingleEmail, Document {}
@@ -28,6 +34,10 @@ const emailSchema: Schema = new Schema({
     required: true,
     default: false,
   },
+  emailType: {
+    type: String,
+    required: true,
+  },
 });
 
 // mongodb queries, and mutations
@@ -45,8 +55,10 @@ export async function findById(emailId: string) {
   return Email.findById(emailId).lean();
 }
 
-export async function allEmail() {
-  return Email.find().lean();
+export async function allEmail(emailType: EmailType) {
+  return Email.findOne({
+    emailType: emailType.toUpperCase(),
+  });
 }
 
 export default Email;
