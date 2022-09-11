@@ -1,7 +1,15 @@
+import { faker } from '@faker-js/faker';
 import type { Request, Response } from 'express';
 
-import type { EmailType, NewEmail } from '../models/email';
-import { allEmail, findById, insertNewEmail } from '../models/email';
+import type { NewEmail, SingleEmail } from '../models/email';
+import {
+  allEmail,
+  createRandomIncomingEmail,
+  EmailType,
+  findById,
+  insertNewEmail,
+  updateOneEmail,
+} from '../models/email';
 
 export async function getAllEmail(request: Request, response: Response) {
   const { type } = request.params;
@@ -43,5 +51,35 @@ export async function getOneById(
 
   response.status(200).send({
     ...thisEmail,
+  });
+}
+
+export async function insertNewRandomEmail(
+  _request: Request,
+  response: Response
+) {
+  const randomEmailData: SingleEmail = {
+    sender: faker.internet.email(),
+    sentAt: new Date().getTime(),
+    content: faker.lorem.paragraph(10),
+    isRead: false,
+    emailType: EmailType.INCOMING,
+  };
+
+  const newRandomIncomingEmail = await createRandomIncomingEmail(
+    randomEmailData
+  );
+
+  response.status(200).send({
+    email: newRandomIncomingEmail,
+  });
+}
+
+export async function markEmailAsRead(request: Request, response: Response) {
+  const { id } = request.params;
+  const email = await updateOneEmail(id as string);
+
+  response.status(200).send({
+    email,
   });
 }

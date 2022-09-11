@@ -56,9 +56,27 @@ export async function findById(emailId: string) {
 }
 
 export async function allEmail(emailType: EmailType) {
-  return Email.findOne({
+  return Email.find({
     emailType: emailType.toUpperCase(),
   });
+}
+
+export async function createRandomIncomingEmail(emailData: NewEmail) {
+  return new Email(emailData).save();
+}
+
+export async function updateOneEmail(id: string) {
+  const thisEmail = Email.findByIdAndUpdate(
+    id,
+    {
+      isRead: true,
+    },
+    {
+      returnOriginal: false,
+    }
+  );
+
+  return thisEmail.lean();
 }
 
 export default Email;
